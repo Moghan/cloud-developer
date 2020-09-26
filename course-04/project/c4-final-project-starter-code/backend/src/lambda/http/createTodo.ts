@@ -1,12 +1,16 @@
+import * as AWS  from 'aws-sdk'
+import * as AWSXRay from 'aws-xray-sdk'
 import 'source-map-support/register'
+import { DocumentClient } from 'aws-sdk/clients/dynamodb'
+
+import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } from 'aws-lambda'
 import * as uuid from 'uuid'
 import { parseUserId} from '../../auth/utils'
-
-import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } from 'aws-lambda'
-
 import { CreateTodoRequest } from '../../requests/CreateTodoRequest'
 
-const todosTable = process.env.GROUPS_TABLE
+const todosTable = process.env.TODOS_TABLE
+const XAWS = AWSXRay.captureAWS(AWS)
+const docClient: DocumentClient = createDynamoDBClient()
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   const newTodoRequest: CreateTodoRequest = JSON.parse(event.body)
@@ -24,7 +28,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     timestamp: new Date().toISOString()
   }
 
-  await this.docClient.put({
+  await docClient.put({
     TableName: todosTable,
     Item: newTodo
   }).promise()
@@ -36,7 +40,19 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
       'Access-Control-Allow-Credentials': true
     },
     body: JSON.stringify({
-      newTodo
+      item: newTodo
     })
   }
+}
+
+function createDynamoDBClient() { // duplication of code that I might fix another day
+  if (false && process.env.IS_OFFLINE) { // turned off for now
+    console.log('Creating a local DynamoDB instance')
+    return new XAWS.DynamoDB.DocumentClient({
+      region: 'localhost',
+      endpoint: 'http://localhost:8000'
+    })
+  }
+
+  return new XAWS.DynamoDB.DocumentClient()
 }
