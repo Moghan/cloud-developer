@@ -1,5 +1,5 @@
 // TODOx: Once your application is deployed, copy an API id here so that the frontend could interact with it
-const apiId = 'h1cpvfug75'
+const apiId = 'a55ionj9oc'
 const serviceEndpoint = 'execute-api.eu-north-1.amazonaws.com/dev'
 export const apiEndpoint = `https://${apiId}.${serviceEndpoint}`
 

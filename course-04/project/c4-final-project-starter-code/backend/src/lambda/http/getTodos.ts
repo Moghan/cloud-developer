@@ -2,6 +2,7 @@ import * as AWS  from 'aws-sdk'
 import * as AWSXRay from 'aws-xray-sdk'
 import 'source-map-support/register'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
+import { parseUserId} from '../../auth/utils'
 
 import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } from 'aws-lambda'
 
@@ -14,11 +15,24 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
 
   const docClient: DocumentClient = createDynamoDBClient()
 
-  const result = await docClient.scan({
-    TableName: todosTable
+  const authorization = event.headers.Authorization
+  const split = authorization.split(' ')
+  const jwtToken = split[1]
+
+  const userId = parseUserId(jwtToken)
+  console.log("userId", userId)
+
+  const result = await docClient.query({
+    TableName: todosTable,
+    KeyConditionExpression: "userId = :userId",
+    ExpressionAttributeValues: {
+        ":userId": userId
+    },
+    ScanIndexForward: false
   }).promise()
 
   const items = result.Items
+  console.log("items", items)
 
   return {
     statusCode: 200,
