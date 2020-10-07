@@ -1,0 +1,22 @@
+{
+    "definitions": {},
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "title": "todo_update",
+    "properties": {
+        "name": {
+            "type": "string"
+        },
+        "dueDate": {
+            "type": "string"
+        },
+        "done": {
+            "type": "boolean"
+        },
+        "thisdontexistandshouldfailthevalidation_butdont": {
+            "type": "boolean"
+        }
+    },
+    "required": ["name", "dueDate", "done", "thisdontexistandshouldfailthevalidation_butdont"],
+    "additionalProperties": false
+  }
