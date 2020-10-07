@@ -24,8 +24,10 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     id: itemId,
     userId: userId,
     name: newTodoRequest.name,
+    done: false,
     dueDate: newTodoRequest.dueDate,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    attachmentUrl: ""
   }
 
   await docClient.put({
