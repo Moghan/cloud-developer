@@ -52,6 +52,7 @@ functions:
       - http:
           method: post
           path: todos
+          authorizer: Auth
           cors: true
 
   # TODOx: Configure this function
@@ -61,6 +62,7 @@ functions:
       - http:
           method: get
           path: todos
+          authorizer: Auth
           cors: true
 
   # TODO: Configure this function
@@ -70,6 +72,7 @@ functions:
       - http:
           method: patch
           path: todos/{todoId}
+          authorizer: Auth
           cors: true
 
   # TODO: Configure this function
@@ -79,6 +82,7 @@ functions:
       - http:
           method: delete
           path: todos/{todoId}
+          authorizer: Auth
           cors: true
 #
   # TODO: Configure this function
@@ -88,6 +92,7 @@ functions:
       - http:
           method: post
           path: todos/{todoId}/attachment
+          authorizer: Auth
           cors: true
 
 resources:
