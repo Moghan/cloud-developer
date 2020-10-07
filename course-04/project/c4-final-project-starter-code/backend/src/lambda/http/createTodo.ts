@@ -8,6 +8,7 @@ import * as uuid from 'uuid'
 import { parseUserId} from '../../auth/utils'
 import { CreateTodoRequest } from '../../requests/CreateTodoRequest'
 
+const bucket = process.env.IMAGES_S3_BUCKET
 const todosTable = process.env.TODOS_TABLE
 const XAWS = AWSXRay.captureAWS(AWS)
 const docClient: DocumentClient = createDynamoDBClient()
@@ -27,7 +28,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     done: false,
     dueDate: newTodoRequest.dueDate,
     timestamp: new Date().toISOString(),
-    attachmentUrl: ""
+    attachmentUrl: `https://${bucket}.s3.eu-north-1.amazonaws.com/${itemId}`
   }
 
   await docClient.put({
