@@ -12,11 +12,8 @@
         },
         "done": {
             "type": "boolean"
-        },
-        "thisdontexistandshouldfailthevalidation_butdont": {
-            "type": "boolean"
         }
     },
-    "required": ["name", "dueDate", "done", "thisdontexistandshouldfailthevalidation_butdont"],
+    "required": ["name", "dueDate", "done"],
     "additionalProperties": false
   }

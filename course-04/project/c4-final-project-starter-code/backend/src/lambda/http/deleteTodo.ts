@@ -33,7 +33,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
       TableName: todosTable,
       Key:{
           "userId": itemToDelete.userId,
-          "timestamp": itemToDelete.timestamp
+          "createdAt": itemToDelete.createdAt
       }
     }).promise()
 
