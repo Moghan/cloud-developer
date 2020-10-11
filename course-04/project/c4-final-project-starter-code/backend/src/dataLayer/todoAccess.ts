@@ -46,7 +46,8 @@ export class TodoAccess {
 
         if(!result.Items) {
             return undefined
-        } // Reviewer: This look terrible. What shall I return if no item was found?
+        }
+        // Reviewer: This look terrible. What shall I return if no item was found?
 
         return result.Items[0] as TodoItem
     }
@@ -94,7 +95,7 @@ export class TodoAccess {
             }
         }).promise()
 
-        // Rewiewer: Shouldn't I check the result in some way?
+        // Reviewer: Shouldn't I check the result in some way?
         console.log("deleteTodo result", result)
 
         return todo
@@ -104,13 +105,14 @@ export class TodoAccess {
     
 
 function createDynamoDBClient() {
-  if (process.env.IS_OFFLINE) {
-    console.log('Creating a local DynamoDB instance')
-    return new XAWS.DynamoDB.DocumentClient({
-      region: 'localhost',
-      endpoint: 'http://localhost:8000'
-    })
-  }
+    // Todo
+    if (process.env.IS_OFFLINE) {
+        console.log('Creating a local DynamoDB instance')
+        return new XAWS.DynamoDB.DocumentClient({
+        region: 'localhost',
+        endpoint: 'http://localhost:8000'
+        })
+    }
 
-  return new XAWS.DynamoDB.DocumentClient()
+    return new XAWS.DynamoDB.DocumentClient()
 }
