@@ -34,10 +34,9 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
     const image_url: string = req.query.image_url
     if(image_url) {
       const filteredImageAbsPath: string = await filterImageFromURL(image_url)
-      const mysend = async (filteredImageAbsPath: string) => await res.sendFile(filteredImageAbsPath)
-      
-      mysend(filteredImageAbsPath)
-        .then(() => deleteLocalFiles([filteredImageAbsPath]))
+
+      res.sendFile(filteredImageAbsPath)
+      res.on('finish', async () => { await deleteLocalFiles([filteredImageAbsPath]); });
 
     } else {
       res.status(400).send(`Image url is missing.`)      
